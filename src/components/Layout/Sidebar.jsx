@@ -125,6 +125,14 @@ const sidebarItems = [
     ),
     path: '/complexity',
   },
+  {
+    label: 'Practice Lab',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C5.7 4 7 5 7 5s1.3-1 2.5-1a2.5 2.5 0 0 1 0 5H8"/><path d="M12 13l-2-2m0 0l-2 2m2-2v8"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg>
+    ),
+    path: '/practice',
+  },
 ]
 
 export default function Sidebar({ isOpen }) {

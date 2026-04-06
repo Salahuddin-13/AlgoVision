@@ -16,6 +16,7 @@ import GreedyVisualizer from './pages/Greedy/GreedyVisualizer'
 import AlgoLab from './pages/AlgoLab/AlgoLab'
 import CodeDebugger from './pages/CodeDebugger/CodeDebugger'
 import Complexity from './pages/Complexity/Complexity'
+import Practice from './pages/Practice/Practice'
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/algo-lab" element={<AlgoLab />} />
         <Route path="/code-debugger" element={<CodeDebugger />} />
         <Route path="/complexity" element={<Complexity />} />
+        <Route path="/practice" element={<Practice />} />
       </Routes>
     </Layout>
   )

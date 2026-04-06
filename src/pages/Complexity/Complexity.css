@@ -47,27 +47,30 @@
 .cx-cubic { color: #ef4444; border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); }
 .cx-space { color: #a78bfa; border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
 
-/* ── Frequency Count ── */
+/* ── Frequency Count (user input) ── */
+.cx-section-sub {
+  font-size: 0.6rem; color: var(--text-tertiary); font-family: var(--font-mono);
+}
 .cx-freq-layout { display: flex; gap: var(--space-md); min-height: 0; }
-.cx-freq-code { flex: 1; min-width: 250px; }
+
+.cx-freq-editor { flex: 1; min-width: 250px; display: flex; flex-direction: column; }
 .cx-freq-code-header {
   display: flex; justify-content: space-between; align-items: center;
   padding: 4px 8px; margin-bottom: 4px;
   font-size: 0.55rem; font-weight: 700; color: var(--text-tertiary);
   text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono);
 }
-.cx-freq-line {
-  display: flex; align-items: center; padding: 4px 8px; gap: 8px;
-  font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-secondary);
-  border-left: 2px solid transparent; transition: all 0.2s ease;
+.cx-freq-textarea {
+  flex: 1; min-height: 160px; resize: vertical;
+  background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); color: var(--text-primary);
+  font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.6;
+  padding: 10px 12px; outline: none; transition: border-color 0.15s ease;
 }
-.cx-freq-line.active {
-  background: rgba(0,240,255,0.06); border-left-color: var(--accent-primary);
-  color: var(--text-primary);
-}
-.cx-freq-ln { width: 18px; text-align: right; color: var(--text-tertiary); opacity: 0.5; font-size: 0.55rem; }
+.cx-freq-textarea:focus { border-color: var(--accent-primary); }
+.cx-freq-textarea::placeholder { color: var(--text-tertiary); }
 
-.cx-freq-table-wrap { flex: 1.2; min-width: 300px; }
+.cx-freq-results { flex: 1.3; min-width: 300px; }
 .cx-freq-table { width: 100%; border-collapse: collapse; font-size: 0.6rem; font-family: var(--font-mono); }
 .cx-freq-table th {
   text-align: left; padding: 4px 8px; color: var(--text-tertiary); font-size: 0.5rem;
@@ -77,14 +80,32 @@
 .cx-freq-table tr.active td { background: rgba(0,240,255,0.06); color: var(--text-primary); }
 .cx-freq-stmt code { font-size: 0.55rem; color: var(--text-secondary); }
 .cx-freq-val { color: var(--accent-warm); font-weight: 600; }
+.cx-freq-empty {
+  display: flex; align-items: center; justify-content: center; height: 100%;
+  color: var(--text-tertiary); font-size: 0.75rem; font-family: var(--font-mono);
+}
+
+/* Type badges */
+.cx-type-badge {
+  font-size: 0.45rem; padding: 1px 5px; border-radius: var(--radius-full);
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.cx-type-for-loop, .cx-type-while-loop, .cx-type-do-loop {
+  color: #f97316; background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.25);
+}
+.cx-type-conditional { color: #a78bfa; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); }
+.cx-type-simple { color: #38bdf8; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); }
+.cx-type-return { color: #22c55e; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); }
+.cx-type-brace { color: var(--text-tertiary); background: transparent; border: 1px solid var(--border-subtle); }
 
 .cx-freq-result {
   margin-top: var(--space-sm); padding: var(--space-sm) var(--space-md);
   background: rgba(0,240,255,0.05); border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.7rem;
-  color: var(--accent-primary);
+  color: var(--accent-primary); display: flex; align-items: center; gap: 6px;
 }
 
 @media (max-width: 900px) {
   .cx-freq-layout { flex-direction: column; }
 }
+
