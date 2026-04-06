@@ -728,3 +728,12 @@
   }
 }
 
+/* ── Audio FAB ── */
+.audio-fab {
+  position: absolute; top: 8px; right: 36px; z-index: 10;
+  background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 4px 8px; cursor: pointer;
+  font-size: 0.85rem; line-height: 1; transition: all 0.15s ease;
+}
+.audio-fab:hover { border-color: var(--accent-primary); }
+.audio-fab.on { border-color: var(--accent-primary); background: rgba(0,240,255,0.08); }

@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { algorithms, pseudocode } from '../../engines/sorting/sortingEngines'
+import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
+import { useAudioExplain } from '../../hooks/useAudioExplain'
 import './Sorting.css'
 
 function generateArray(size) {
@@ -135,6 +137,7 @@ export default function Sorting() {
   const [stepIndex, setStepIndex] = useState(-1)
   const [meta, setMeta] = useState(null)
   const [customInput, setCustomInput] = useState('')
+  const { speak, stop: stopAudio, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
 
   const runningRef = useRef(false)
   const pausedRef = useRef(false)
@@ -184,6 +187,9 @@ export default function Sorting() {
       if (all[i].comparing.length > 0) comps++
       if (all[i].swapping.length > 0) swps++
       setStats({ comparisons: comps, swaps: swps })
+      // Audio narration
+      if (all[i].comparing.length === 2) speak(`Comparing ${array[all[i].comparing[0]]} and ${array[all[i].comparing[1]]}`)
+      else if (all[i].swapping.length === 2) speak(`Swapping ${array[all[i].swapping[0]]} and ${array[all[i].swapping[1]]}`)
       await new Promise(r => setTimeout(r, getDelayMs(speedRef.current)))
     }
     setIsRunning(false); runningRef.current = false
@@ -349,7 +355,14 @@ export default function Sorting() {
 
       {/* Visualization */}
       <div className="viz-body">
-        <div className="viz-canvas-area glass-card">
+        <div className="viz-canvas-area glass-card" style={{position:'relative'}}>
+          <FullscreenMode codeContent={codeLines} currentLine={currentLine}>
+            {/* This content gets rendered inside fullscreen when toggled */}
+          </FullscreenMode>
+          {/* Audio toggle */}
+          <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} title={audioOn ? 'Mute narration' : 'Enable narration'}>
+            {audioOn ? '🔊' : '🔇'}
+          </button>
           {/* Dynamic legend */}
           <div className="viz-legend">
             {getLegend().map((l, i) => (

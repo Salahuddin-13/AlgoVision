@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import GraphCanvas, { GRAPH_PRESETS } from '../../components/GraphCanvas/GraphCanvas'
+import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
+import { useAudioExplain } from '../../hooks/useAudioExplain'
 import '../Sorting/Sorting.css'
 import '../DataStructures/DS.css'
 import './Greedy.css'
@@ -446,6 +448,7 @@ export default function GreedyVisualizer() {
   const [speed, setSpeed] = useState(40)
   const [message, setMessage] = useState('Select an algorithm and configure inputs.')
   const runRef = useRef(false)
+  const { speak, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
 
   // Knapsack state
   const [knapsackItems, setKnapsackItems] = useState(DEFAULT_KNAPSACK_ITEMS)
@@ -522,6 +525,7 @@ export default function GreedyVisualizer() {
       if (!runRef.current) break
       setStepIdx(i)
       setMessage(allSteps[i].desc || '')
+      speak(allSteps[i].desc || '')
       await sleep(getDelay())
     }
 
@@ -641,7 +645,9 @@ export default function GreedyVisualizer() {
       </div>
 
       <div className="viz-body">
-        <div className="ds-canvas glass-card" style={{ flex: 1 }}>
+        <div className="ds-canvas glass-card" style={{ flex: 1, position:'relative' }}>
+          <FullscreenMode codeContent={[]} currentLine={-1} />
+          <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} title={audioOn ? 'Mute' : 'Narrate'}>{audioOn ? '🔊' : '🔇'}</button>
           {/* ── Knapsack Visualization ── */}
           {algo === 'knapsack' && (
             <div className="greedy-viz-area">

@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
+import { useAudioExplain } from '../../hooks/useAudioExplain'
 import '../Sorting/Sorting.css'
 import '../DataStructures/DS.css'
 
@@ -14,6 +16,10 @@ export default function Searching() {
   const [isRunning, setIsRunning] = useState(false)
   const [low, setLow] = useState(-1)
   const [high, setHigh] = useState(-1)
+  const { speak, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
+
+  const bsCode = ['low = 0, high = n-1','while (low <= high)','  mid = (low+high)/2','  if arr[mid] == target','    return mid','  else if arr[mid] < target','    low = mid + 1','  else','    high = mid - 1','return -1']
+  const lsCode = ['for i = 0 to n-1','  if arr[i] == target','    return i','return -1']
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms))
 
@@ -40,11 +46,13 @@ export default function Searching() {
       setLow(lo)
       setHigh(hi)
       setHighlights({ [mid]: 'current' })
+      speak(`Checking index ${mid}, value ${array[mid]}`)
       await sleep(600)
 
       if (array[mid] === val) {
         setHighlights({ [mid]: 'found' })
         setMessage(`Found ${val} at index ${mid}!`)
+        speak(`Found ${val} at index ${mid}`)
         setIsRunning(false)
         return
       } else if (array[mid] < val) {
@@ -70,6 +78,7 @@ export default function Searching() {
 
     for (let i = 0; i < array.length; i++) {
       setHighlights({ [i]: 'current' })
+      speak(`Checking index ${i}, value ${array[i]}`)
       await sleep(300)
       if (array[i] === val) {
         setHighlights({ [i]: 'found' })
@@ -125,7 +134,11 @@ export default function Searching() {
         </button>
       </div>
 
-      <div className="ds-canvas glass-card">
+      <div className="ds-canvas glass-card" style={{position:'relative'}}>
+        <FullscreenMode codeContent={algo === 'binary' ? bsCode : lsCode} currentLine={-1} />
+        <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} title={audioOn ? 'Mute' : 'Narrate'}>
+          {audioOn ? '🔊' : '🔇'}
+        </button>
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 16px', flexWrap: 'wrap', gap: '6px' }}>
           {array.map((val, i) => (
             <div key={i} style={{

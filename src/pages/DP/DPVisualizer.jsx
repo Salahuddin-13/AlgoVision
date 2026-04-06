@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react'
+import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
+import { useAudioExplain } from '../../hooks/useAudioExplain'
 import '../Sorting/Sorting.css'
 import '../DataStructures/DS.css'
 import './DP.css'
@@ -295,6 +297,7 @@ export default function DPVisualizer() {
   const [speed, setSpeed] = useState(40)
   const [message, setMessage] = useState('Select a problem and click Solve.')
   const runRef = useRef(false)
+  const { speak, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
 
   // 2D-specific inputs
   const [lcsA, setLcsA] = useState(lcs.defaultA)
@@ -394,6 +397,10 @@ export default function DPVisualizer() {
 
   return (
     <div className="ds-page">
+      <div style={{position:'relative'}}>
+        <FullscreenMode codeContent={[p.code]} currentLine={-1} />
+        <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} style={{position:'absolute',top:8,right:36,zIndex:10}} title={audioOn ? 'Mute' : 'Narrate'}>{audioOn ? '🔊' : '🔇'}</button>
+      </div>
       <div className="viz-header">
         <div>
           <span className="section-label">Dynamic Programming</span>
