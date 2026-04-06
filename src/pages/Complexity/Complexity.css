@@ -1,0 +1,90 @@
+/* ═══════════════════
+   Complexity Page
+   ═══════════════════ */
+
+.cx-page {
+  display: flex; flex-direction: column; gap: var(--space-lg);
+  padding-bottom: var(--space-xl); overflow-y: auto;
+  height: calc(100vh - var(--navbar-height) - var(--space-xl) * 2);
+}
+
+.cx-section { padding: var(--space-lg); overflow: visible; }
+.cx-section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-md); }
+.cx-section-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.cx-filters { display: flex; gap: 4px; flex-wrap: wrap; }
+.cx-filter {
+  padding: 3px 10px; border: 1px solid var(--border-subtle); border-radius: var(--radius-full);
+  background: var(--bg-surface); color: var(--text-secondary); font-size: 0.55rem;
+  font-family: var(--font-mono); cursor: pointer; font-weight: 600; transition: all 0.12s ease;
+}
+.cx-filter:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+.cx-filter.active { background: rgba(0,240,255,0.08); border-color: var(--accent-primary); color: var(--accent-primary); }
+
+/* ── Table ── */
+.cx-table-wrap { overflow-x: auto; }
+.cx-table {
+  width: 100%; border-collapse: collapse; font-size: 0.7rem; font-family: var(--font-mono);
+}
+.cx-table th {
+  text-align: left; padding: 6px 10px; color: var(--text-tertiary); font-size: 0.55rem;
+  text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border-subtle);
+}
+.cx-table td { padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); }
+.cx-table tr:hover td { background: rgba(0,240,255,0.03); }
+.cx-name { color: var(--text-primary); font-weight: 600; }
+
+.cx-badge {
+  display: inline-block; padding: 1px 7px; border-radius: var(--radius-full);
+  font-size: 0.55rem; font-weight: 600; border: 1px solid;
+}
+.cx-constant { color: #22c55e; border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
+.cx-loglog { color: #34d399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); }
+.cx-log { color: #4ade80; border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+.cx-sqrt { color: #67e8f9; border-color: rgba(103,232,249,0.3); background: rgba(103,232,249,0.08); }
+.cx-linear { color: #38bdf8; border-color: rgba(56,189,248,0.3); background: rgba(56,189,248,0.08); }
+.cx-nlogn { color: #f59e0b; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); }
+.cx-quadratic { color: #f97316; border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); }
+.cx-cubic { color: #ef4444; border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); }
+.cx-space { color: #a78bfa; border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
+
+/* ── Frequency Count ── */
+.cx-freq-layout { display: flex; gap: var(--space-md); min-height: 0; }
+.cx-freq-code { flex: 1; min-width: 250px; }
+.cx-freq-code-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 8px; margin-bottom: 4px;
+  font-size: 0.55rem; font-weight: 700; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono);
+}
+.cx-freq-line {
+  display: flex; align-items: center; padding: 4px 8px; gap: 8px;
+  font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-secondary);
+  border-left: 2px solid transparent; transition: all 0.2s ease;
+}
+.cx-freq-line.active {
+  background: rgba(0,240,255,0.06); border-left-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+.cx-freq-ln { width: 18px; text-align: right; color: var(--text-tertiary); opacity: 0.5; font-size: 0.55rem; }
+
+.cx-freq-table-wrap { flex: 1.2; min-width: 300px; }
+.cx-freq-table { width: 100%; border-collapse: collapse; font-size: 0.6rem; font-family: var(--font-mono); }
+.cx-freq-table th {
+  text-align: left; padding: 4px 8px; color: var(--text-tertiary); font-size: 0.5rem;
+  text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border-subtle);
+}
+.cx-freq-table td { padding: 4px 8px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); }
+.cx-freq-table tr.active td { background: rgba(0,240,255,0.06); color: var(--text-primary); }
+.cx-freq-stmt code { font-size: 0.55rem; color: var(--text-secondary); }
+.cx-freq-val { color: var(--accent-warm); font-weight: 600; }
+
+.cx-freq-result {
+  margin-top: var(--space-sm); padding: var(--space-sm) var(--space-md);
+  background: rgba(0,240,255,0.05); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--accent-primary);
+}
+
+@media (max-width: 900px) {
+  .cx-freq-layout { flex-direction: column; }
+}
