@@ -187,9 +187,14 @@ export default function Sorting() {
       if (all[i].comparing.length > 0) comps++
       if (all[i].swapping.length > 0) swps++
       setStats({ comparisons: comps, swaps: swps })
-      // Audio narration
-      if (all[i].comparing.length === 2) speak(`Comparing ${array[all[i].comparing[0]]} and ${array[all[i].comparing[1]]}`)
-      else if (all[i].swapping.length === 2) speak(`Swapping ${array[all[i].swapping[0]]} and ${array[all[i].swapping[1]]}`)
+      // Meaningful audio narration
+      if (all[i].swapping.length === 2) {
+        const a = all[i].array[all[i].swapping[0]], b = all[i].array[all[i].swapping[1]]
+        speak(`Swapping ${a} and ${b} because they are out of order.`)
+      } else if (all[i].comparing.length === 2) {
+        const a = all[i].array[all[i].comparing[0]], b = all[i].array[all[i].comparing[1]]
+        speak(`Comparing ${a} and ${b}. ${a > b ? `${a} is greater, so a swap is needed.` : `Already in order, no swap.`}`)
+      }
       await new Promise(r => setTimeout(r, getDelayMs(speedRef.current)))
     }
     setIsRunning(false); runningRef.current = false

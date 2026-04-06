@@ -46,18 +46,20 @@ export default function Searching() {
       setLow(lo)
       setHigh(hi)
       setHighlights({ [mid]: 'current' })
-      speak(`Checking index ${mid}, value ${array[mid]}`)
+      speak(`Search range is index ${lo} to ${hi}. Checking midpoint index ${mid}, value is ${array[mid]}.`)
       await sleep(600)
 
       if (array[mid] === val) {
         setHighlights({ [mid]: 'found' })
         setMessage(`Found ${val} at index ${mid}!`)
-        speak(`Found ${val} at index ${mid}`)
+        speak(`Found ${val} at index ${mid}. Search complete.`)
         setIsRunning(false)
         return
       } else if (array[mid] < val) {
+        speak(`Midpoint value ${array[mid]} is less than ${val}. Search range moves to the right half, from index ${mid + 1}.`)
         lo = mid + 1
       } else {
+        speak(`Midpoint value ${array[mid]} is greater than ${val}. Search range moves to the left half, up to index ${mid - 1}.`)
         hi = mid - 1
       }
     }
@@ -78,11 +80,12 @@ export default function Searching() {
 
     for (let i = 0; i < array.length; i++) {
       setHighlights({ [i]: 'current' })
-      speak(`Checking index ${i}, value ${array[i]}`)
+      speak(`Checking index ${i}. Value is ${array[i]}. ${array[i] === val ? `Match found!` : `Not a match. Moving to next element.`}`)
       await sleep(300)
       if (array[i] === val) {
         setHighlights({ [i]: 'found' })
         setMessage(`Found ${val} at index ${i}!`)
+        speak(`Found ${val} at index ${i} after checking ${i + 1} element${i === 0 ? '' : 's'}. Linear search complete.`)
         setIsRunning(false)
         return
       }

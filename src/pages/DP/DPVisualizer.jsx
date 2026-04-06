@@ -303,7 +303,11 @@ export default function DPVisualizer() {
   const [lcsA, setLcsA] = useState(lcs.defaultA)
   const [lcsB, setLcsB] = useState(lcs.defaultB)
   const [knapsackCap, setKnapsackCap] = useState(knapsack01.defaultCap)
+  const [knapsackWeights, setKnapsackWeights] = useState('2,1,3,2')
+  const [knapsackValues, setKnapsackValues] = useState('12,10,20,15')
   const [matrixDims, setMatrixDims] = useState(matrixChain.defaultDims.join(','))
+  const [coinAmount, setCoinAmount] = useState(10)
+  const [coinDenoms, setCoinDenoms] = useState('1,3,4')
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms))
   const getDelay = () => {
@@ -323,9 +327,30 @@ export default function DPVisualizer() {
         setMessage(`Enter a value between 0 and ${prob.maxN || 30}.`)
         return
       }
-      allSteps = prob.compute(n)
+      if (problem === 'coinChange') {
+        const coins = coinDenoms.split(',').map(Number).filter(c => !isNaN(c) && c > 0)
+        if (coins.length === 0) { setMessage('Enter at least one coin denomination.'); return }
+        // Compute with user coins
+        const dp = Array(n + 1).fill(Infinity)
+        dp[0] = 0
+        const userSteps = [{ table: [...dp], fill: 0, deps: [], desc: `dp[0] = 0 (base: 0 coins for amount 0)` }]
+        for (let i = 1; i <= n; i++) {
+          for (const c of coins) {
+            if (i >= c && dp[i - c] + 1 < dp[i]) dp[i] = dp[i - c] + 1
+          }
+          userSteps.push({ table: [...dp], fill: i, deps: coins.filter(c => i - c >= 0).map(c => i - c),
+            desc: `Amount ${i}: min coins = ${dp[i] === Infinity ? '∞ (unreachable)' : dp[i]}` })
+        }
+        allSteps = userSteps
+      } else {
+        allSteps = prob.compute(n)
+      }
     } else if (problem === 'knapsack01') {
-      allSteps = prob.compute(prob.defaultItems, knapsackCap)
+      const ws = knapsackWeights.split(',').map(Number).filter(n => !isNaN(n) && n > 0)
+      const vs = knapsackValues.split(',').map(Number).filter(n => !isNaN(n) && n > 0)
+      if (ws.length !== vs.length || ws.length === 0) { setMessage('Weights and values must have equal count.'); return }
+      const items = ws.map((w, i) => ({ weight: w, value: vs[i] }))
+      allSteps = prob.compute(items, knapsackCap)
     } else if (problem === 'lcs') {
       if (!lcsA || !lcsB) { setMessage('Enter both strings.'); return }
       allSteps = prob.compute(lcsA, lcsB)
@@ -348,6 +373,7 @@ export default function DPVisualizer() {
       if (!runRef.current) break
       setStepIdx(i)
       setMessage(allSteps[i].desc || '')
+      speak(allSteps[i].desc || '')
       await sleep(getDelay())
     }
 
@@ -397,10 +423,6 @@ export default function DPVisualizer() {
 
   return (
     <div className="ds-page">
-      <div style={{position:'relative'}}>
-        <FullscreenMode codeContent={[p.code]} currentLine={-1} />
-        <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} style={{position:'absolute',top:8,right:36,zIndex:10}} title={audioOn ? 'Mute' : 'Narrate'}>{audioOn ? '🔊' : '🔇'}</button>
-      </div>
       <div className="viz-header">
         <div>
           <span className="section-label">Dynamic Programming</span>
@@ -411,6 +433,7 @@ export default function DPVisualizer() {
             <span className="stat-label">Step</span>
             <span className="stat-value gradient-text">{stepIdx >= 0 ? stepIdx + 1 : 0}/{steps.length || '—'}</span>
           </div>
+          <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} style={{position:'static',marginLeft:8}} title={audioOn ? 'Mute narration' : 'Enable narration'}>{audioOn ? '🔊' : '🔇'}</button>
         </div>
       </div>
 
@@ -529,6 +552,14 @@ export default function DPVisualizer() {
                   className="ds-input ds-input-sm" min="0" max={prob.maxN || 30} disabled={isRunning} />
               </div>
             )}
+            {problem === 'coinChange' && (
+              <div className="control-group">
+                <label className="control-label">Coins (comma):</label>
+                <input type="text" value={coinDenoms} onChange={e => setCoinDenoms(e.target.value)}
+                  className="ds-input" disabled={isRunning} style={{ width: '100%' }}
+                  placeholder="e.g. 1,3,4" />
+              </div>
+            )}
             {problem === 'lcs' && (
               <>
                 <div className="control-group">
@@ -545,9 +576,15 @@ export default function DPVisualizer() {
             )}
             {problem === 'knapsack01' && (
               <div className="control-group">
-                <label className="control-label">Capacity:</label>
+                <label className="control-label">Weights (comma):</label>
+                <input type="text" value={knapsackWeights} onChange={e => setKnapsackWeights(e.target.value)}
+                  className="ds-input" disabled={isRunning} style={{ width: '100%' }} />
+                <label className="control-label" style={{marginTop:4}}>Values (comma):</label>
+                <input type="text" value={knapsackValues} onChange={e => setKnapsackValues(e.target.value)}
+                  className="ds-input" disabled={isRunning} style={{ width: '100%' }} />
+                <label className="control-label" style={{marginTop:4}}>Capacity:</label>
                 <input type="number" value={knapsackCap} onChange={e => setKnapsackCap(+e.target.value)}
-                  className="ds-input ds-input-sm" min="1" max="20" disabled={isRunning} />
+                  className="ds-input ds-input-sm" min="1" max="50" disabled={isRunning} />
               </div>
             )}
             {problem === 'matrixChain' && (
