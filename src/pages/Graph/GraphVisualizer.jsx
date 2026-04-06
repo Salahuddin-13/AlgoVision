@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
-import { useAudioExplain } from '../../hooks/useAudioExplain'
+import { useFullscreen } from '../../hooks/useFullscreen'
 import '../Sorting/Sorting.css'
 import './Graph.css'
 
@@ -487,10 +487,11 @@ function GraphTraversal() {
    ══════════════════════════════════════════════════════════════ */
 export default function GraphVisualizer() {
   const [tab, setTab] = useState('traversal')
+  const { ref: fsRef, isFs, toggle: toggleFs } = useFullscreen()
 
   return (
-    <div className="ds-page" style={{position:'relative'}}>
-      <FullscreenMode codeContent={[]} currentLine={-1} />
+    <div ref={fsRef} className="ds-page" style={{position:'relative'}}>
+      <FullscreenMode isFs={isFs} onToggle={toggleFs} codeLines={[]} currentLine={-1} />
       <div className="viz-header">
         <div>
           <span className="section-label">Graph Algorithms</span>

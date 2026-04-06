@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
 import { useAudioExplain } from '../../hooks/useAudioExplain'
+import { useFullscreen } from '../../hooks/useFullscreen'
 import '../Sorting/Sorting.css'
 import '../DataStructures/DS.css'
 import './DP.css'
@@ -297,7 +298,8 @@ export default function DPVisualizer() {
   const [speed, setSpeed] = useState(40)
   const [message, setMessage] = useState('Select a problem and click Solve.')
   const runRef = useRef(false)
-  const { speak, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
+  const { speak, speakIntro, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
+  const { ref: fsRef, isFs, toggle: toggleFs } = useFullscreen()
 
   // 2D-specific inputs
   const [lcsA, setLcsA] = useState(lcs.defaultA)
@@ -364,7 +366,7 @@ export default function DPVisualizer() {
     }
 
     if (!allSteps || allSteps.length === 0) return
-
+    speakIntro(problem)
     setSteps(allSteps)
     setIsRunning(true)
     runRef.current = true
@@ -448,7 +450,9 @@ export default function DPVisualizer() {
       </div>
 
       <div className="viz-body">
-        <div className="ds-canvas glass-card" style={{ flex: 1 }}>
+        <div ref={fsRef} className="ds-canvas glass-card" style={{ flex: 1, position:'relative' }}>
+          <FullscreenMode isFs={isFs} onToggle={toggleFs} codeLines={[prob.code]} currentLine={-1} />
+          <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} style={{position:'absolute',top:8,right:44,zIndex:10}} title={audioOn ? 'Mute' : 'Narrate'}>{audioOn ? '🔊' : '🔇'}</button>
           <div className="dp-container">
             <p className="dp-desc">{prob.desc}</p>
 

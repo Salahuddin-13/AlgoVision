@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { algorithms, pseudocode } from '../../engines/sorting/sortingEngines'
 import FullscreenMode from '../../components/FullscreenMode/FullscreenMode'
 import { useAudioExplain } from '../../hooks/useAudioExplain'
+import { useFullscreen } from '../../hooks/useFullscreen'
 import './Sorting.css'
 
 function generateArray(size) {
@@ -137,7 +138,8 @@ export default function Sorting() {
   const [stepIndex, setStepIndex] = useState(-1)
   const [meta, setMeta] = useState(null)
   const [customInput, setCustomInput] = useState('')
-  const { speak, stop: stopAudio, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
+  const { speak, speakIntro, stop: stopAudio, toggle: toggleAudio, isOn: audioOn } = useAudioExplain()
+  const { ref: fsRef, isFs, toggle: toggleFs } = useFullscreen()
 
   const runningRef = useRef(false)
   const pausedRef = useRef(false)
@@ -178,6 +180,7 @@ export default function Sorting() {
   }
 
   const runVisualization = useCallback(async () => {
+    speakIntro(algo)
     const all = generateSteps(); setSteps(all); setIsRunning(true); runningRef.current = true
     let comps = 0, swps = 0
     for (let i = 0; i < all.length; i++) {
@@ -360,14 +363,9 @@ export default function Sorting() {
 
       {/* Visualization */}
       <div className="viz-body">
-        <div className="viz-canvas-area glass-card" style={{position:'relative'}}>
-          <FullscreenMode codeContent={codeLines} currentLine={currentLine}>
-            {/* This content gets rendered inside fullscreen when toggled */}
-          </FullscreenMode>
-          {/* Audio toggle */}
-          <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} title={audioOn ? 'Mute narration' : 'Enable narration'}>
-            {audioOn ? '🔊' : '🔇'}
-          </button>
+        <div ref={fsRef} className="viz-canvas-area glass-card" style={{position:'relative'}}>
+          <FullscreenMode isFs={isFs} onToggle={toggleFs} codeLines={codeLines} currentLine={currentLine} />
+          <button className={`audio-fab ${audioOn ? 'on' : ''}`} onClick={toggleAudio} title={audioOn ? 'Mute' : 'Narrate'}>{audioOn ? '🔊' : '🔇'}</button>
           {/* Dynamic legend */}
           <div className="viz-legend">
             {getLegend().map((l, i) => (
