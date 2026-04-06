@@ -381,3 +381,94 @@
   display: flex;
   align-items: center;
 }
+
+/* ── Stack Layout (side-by-side with code panel) ── */
+.stack-layout {
+  flex: 1; display: flex; gap: var(--space-md); min-height: 0; overflow: hidden; position: relative;
+}
+
+/* ── Array Stack (bucket style) ── */
+.arr-stack-container {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: var(--space-3xl); padding: var(--space-md);
+}
+.arr-stack-wrapper {
+  display: flex; flex-direction: column; align-items: center;
+  border-left: 3px solid var(--text-tertiary); border-right: 3px solid var(--text-tertiary);
+  border-bottom: 3px solid var(--text-tertiary); border-radius: 0 0 6px 6px;
+  padding: 0 4px 4px; position: relative; min-width: 180px;
+}
+.arr-stack-maxline {
+  width: 100%; border-top: 2px dashed var(--accent-danger); padding: 2px 0;
+  text-align: center; font-size: 0.5rem; color: var(--accent-danger);
+  font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.05em;
+}
+.arr-stack-body { display: flex; flex-direction: column; width: 100%; gap: 2px; }
+.arr-stack-bottom {
+  font-size: 0.45rem; color: var(--text-tertiary); font-family: var(--font-mono);
+  text-align: center; padding-top: 2px; letter-spacing: 0.1em;
+}
+.arr-slot {
+  display: flex; align-items: center; min-height: 30px; position: relative;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);
+  background: var(--bg-secondary); transition: all 0.2s ease;
+}
+.arr-slot.filled { background: var(--bg-elevated); border-color: var(--border-default); }
+.arr-slot.highlight {
+  border-color: var(--accent-primary); background: rgba(0,240,255,0.08);
+  box-shadow: 0 0 12px rgba(0,240,255,0.25); animation: slotPulse 0.5s ease;
+}
+.arr-slot.is-top { border-color: var(--accent-warm); }
+.arr-slot-idx {
+  width: 24px; text-align: center; font-size: 0.5rem; color: var(--text-tertiary);
+  font-family: var(--font-mono); opacity: 0.6; flex-shrink: 0;
+  border-right: 1px solid var(--border-subtle); padding: 2px;
+}
+.arr-slot-val {
+  flex: 1; text-align: center; font-family: var(--font-mono); font-weight: 700;
+  font-size: 0.85rem; color: var(--text-primary); padding: 4px;
+}
+.arr-top-ptr {
+  position: absolute; right: -55px; font-size: 0.55rem; font-weight: 700;
+  color: var(--accent-warm); font-family: var(--font-mono); letter-spacing: 0.05em; white-space: nowrap;
+}
+@keyframes slotPulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+/* ── Linked List Stack (node chain) ── */
+.ll-stack-container {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: var(--space-md); padding: var(--space-md);
+}
+.ll-stack-chain {
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto; padding: var(--space-md); flex-wrap: wrap; justify-content: center;
+}
+.ll-top-label {
+  font-size: 0.6rem; font-weight: 700; color: var(--accent-primary);
+  font-family: var(--font-mono); letter-spacing: 0.1em; margin-right: 4px;
+}
+.ll-top-arrow { flex-shrink: 0; margin-right: 4px; }
+.ll-node-group { display: flex; align-items: center; flex-direction: row; position: relative; }
+.ll-node {
+  display: flex; border: 1px solid var(--border-default); border-radius: var(--radius-md);
+  overflow: hidden; background: var(--bg-elevated); transition: all 0.2s ease;
+}
+.ll-node.highlight {
+  border-color: var(--accent-primary); box-shadow: 0 0 16px rgba(0,240,255,0.3); transform: scale(1.08);
+}
+.ll-node-data {
+  padding: 8px 16px; font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem;
+  color: var(--text-primary); border-right: 1px solid var(--border-subtle); min-width: 44px; text-align: center;
+}
+.ll-node-addr {
+  position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+  font-size: 0.4rem; color: var(--text-tertiary); font-family: var(--font-mono); opacity: 0.7; white-space: nowrap;
+}
+.ll-null {
+  font-size: 0.65rem; font-weight: 700; color: var(--accent-danger);
+  font-family: var(--font-mono); margin-left: 6px; letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .stack-layout { flex-direction: column; }
+}
+
