@@ -1,0 +1,106 @@
+/* ── Backtracking Styles ── */
+
+/* ── Chess Board (N-Queens) ── */
+.chess-container {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.chess-board {
+  display: grid;
+  gap: 0;
+  max-width: 450px;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.chess-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+}
+
+.chess-cell.dark { background: var(--bg-elevated); }
+.chess-cell.light { background: var(--bg-surface); }
+.chess-cell.queen { background: rgba(34,197,94,0.15); }
+.chess-cell.trying { background: rgba(234,179,8,0.15); animation: bt-pulse 0.3s ease; }
+.chess-cell.backtrack { background: rgba(239,68,68,0.1); }
+
+.queen-icon { font-size: 1.4em; color: var(--accent-success); }
+.trying-icon { font-size: 1em; color: #eab308; font-weight: 700; }
+
+/* ── Sudoku Board ── */
+.sudoku-container {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.sudoku-board {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--text-secondary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.sudoku-row {
+  display: flex;
+}
+
+.sudoku-cell {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  transition: all 0.15s ease;
+}
+
+.sudoku-cell.fixed {
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  font-weight: 800;
+}
+
+.sudoku-cell.filled:not(.fixed) {
+  color: var(--accent-primary);
+}
+
+.sudoku-cell.highlight {
+  background: rgba(0,240,255,0.15);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(0,240,255,0.3);
+  z-index: 2;
+  transform: scale(1.05);
+}
+
+.sudoku-cell.box-border-bottom {
+  border-bottom: 2px solid var(--text-secondary);
+}
+
+.sudoku-cell.box-border-right {
+  border-right: 2px solid var(--text-secondary);
+}
+
+/* ── Graph Backtracking Container ── */
+.graph-bt-container {
+  position: relative;
+  min-height: 400px;
+}
+
+@keyframes bt-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
